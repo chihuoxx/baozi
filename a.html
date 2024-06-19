@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>取消限制</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+  }
+  .message {
+    margin-top: 20px;
+    font-size: 1.2em;
+  }
+  .status {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  .photo-container {
+    margin-top: 20px;
+    border: 5px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+  }
+  .photo-container img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>
+</head>
+<body>
+  <h1>取消</h1>
+  <div class="photo-container">
+    < img src="https://www.ccps.gov.cn/zl/20dzl/202210/W020221025801316255839.jpg" alt="你好">
+  </div>
+  <div class="message" id="message"></div>
+  <div class="status" id="status"></div>
+  <div class="hand-status" id="handStatus"></div>
+
+  <script>
+    let step = 0; // 控制台词的显示步骤
+    let raisedHand = false; // 标记是否已经举手
+
+    function showText(text) {
+      document.getElementById('message').innerText = text;
+    }
+
+    function showStatus(status) {
+      document.getElementById('status').innerText = `当前状态：${status}`;
+    }
+
+    function showHandStatus(status) {
+      document.getElementById('handStatus').innerText = `举手状态：${status}`;
+    }
+
+    function autoPlayStory() {
+      switch (step) {
+        case 0:
+          showText('大家好');
+          setTimeout(nextPhrase, 2000); // Move to next phrase after 2 seconds
+          break;
+        case 1:
+          showText('你们同意的请举手。');
+          setTimeout(checkRaiseHand, 2000); // Check hand raise after 2 seconds
+          break;
+        case 2:
+          showText('好的，放下。');
+          setTimeout(nextPhrase, 2000); // Move to next phrase after 2 seconds
+          break;
+        case 3:
+          showText('不同意的请举手。');
+          setTimeout(checkPutDown, 2000); // Check hand put down after 2 seconds
+          break;
+        default:
+          break;
+      }
+    }
+
+    function nextPhrase() {
+      step++;
+      autoPlayStory(); // Continue to next phrase
+    }
+
+    function checkRaiseHand() {
+      if (raisedHand) {
+        showText('您已举手。');
+        showHandStatus('已举手');
+        showStatus('举手');
+        setTimeout(nextPhrase, 2000); // Move to next phrase after 2 seconds
+      } else {
+        showText('您被杀掉了！因为您没有举手。');
+      }
+    }
+
+    function checkPutDown() {
+      if (!raisedHand) {
+        showText('您已放下手。');
+        showHandStatus('已放下');
+        showStatus('放下');
+        setTimeout(nextPhrase, 2000); // Move to next phrase after 2 seconds
+      } else {
+        showText('您被杀掉了！因为您没有放下手。');
+      }
+    }
+
+    function raiseHand() {
+      raisedHand = true;
+      autoPlayStory(); // Trigger story progression after hand raised manually
+    }
+
+    function putDown() {
+      raisedHand = false;
+      autoPlayStory(); // Trigger story progression after hand put down manually
+    }
+
+    // Start autoplay when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      autoPlayStory();
+    });
+  </script>
+
+  <br>
+  <button onclick="raiseHand()">举手</button>
+  <button onclick="putDown()">放下</button>
+</body>
+</html>

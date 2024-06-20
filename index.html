@@ -1,129 +1,97 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>取消限制</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin-top: 50px;
-  }
-  .message {
-    margin-top: 20px;
-    font-size: 1.2em;
-  }
-  .status {
-    font-weight: bold;
-    margin-top: 10px;
-  }
-  .photo-container {
-    margin-top: 20px;
-    border: 5px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: inline-block;
-  }
-  .photo-container img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哀悼习近平</title>
 </head>
-<body>
-  <h1>取消</h1>
-  <div class="photo-container">
-    < img src="https://th.bing.com/th/id/R.937d77f227560186063440fd07a12417?rik=gwTwtnlffolf2w&riu=http%3a%2f%2fcpc.people.com.cn%2fNMediaFile%2f2018%2f0830%2fMAIN201808301122000188440897087.jpg&ehk=N0umeoLh5lvVYW5WIX2mYp97Y0uhBYQ2UDjuMsSorEk%3d&risl=&pid=ImgRaw&r=0" alt="你好">
-  </div>
-  <div class="message" id="message"></div>
-  <div class="status" id="status"></div>
-  <div class="hand-status" id="handStatus"></div>
+<body style="text-align: center; font-family: Arial, sans-serif;" id="body">
+    <h1>哀悼习近平</h1>
+    <p>请默哀...</p>
 
-  <script>
-    let step = 0; // 控制台词的显示步骤
-    let raisedHand = false; // 标记是否已经举手
+    <!-- 播放哀乐音乐按钮 -->
+    <button onclick="playLamentMusic()">播放哀乐</button>
 
-    function showText(text) {
-      document.getElementById('message').innerText = text;
-    }
+    <!-- 播放音乐 -->
+    <audio id="bgMusic1" style="display: none;">
+        <source src="http://music.163.com/song/media/outer/url?id=395194.mp3" type="audio/mpeg">
+        您的浏览器不支持音频播放。
+    </audio>
 
-    function showStatus(status) {
-      document.getElementById('status').innerText = `当前状态：${status}`;
-    }
+    <!-- 显示黑白照片 -->
+    <div style="margin-top: 20px;">
+        <img src="http://j.people.com.cn/NMediaFile/2024/0613/FOREIGN1718260674780BHNR5L1LM0.jpg" alt="习近平的黑白照片" style="max-width: 100%; height: auto; filter: grayscale(100%);">
+    </div>
 
-    function showHandStatus(status) {
-      document.getElementById('handStatus').innerText = `举手状态：${status}`;
-    }
+    <p style="margin-top: 20px; font-size: 0.8em;">图片来源: 人民网</p>
 
-    function autoPlayStory() {
-      switch (step) {
-        case 0:
-          showText('大家好');
-          setTimeout(nextPhrase, 2000); // Move to next phrase after 2 seconds
-          break;
-        case 1:
-          showText('你们同意的请举手。');
-          setTimeout(checkRaiseHand, 2000); // Check hand raise after 2 seconds
-          break;
-        case 2:
-          showText('好的，放下。');
-          setTimeout(nextPhrase, 2000); // Move to next phrase after 2 seconds
-          break;
-        case 3:
-          showText('不同意的请举手。');
-          setTimeout(checkPutDown, 2000); // Check hand put down after 2 seconds
-          break;
-        default:
-          break;
-      }
-    }
+    <!-- 新闻稿 -->
+    <div style="text-align: left; margin-top: 30px;">
+        <h2>习近平主席离世新闻稿</h2>
+        <p>2024年6月18日，习近平主席因突发心脏病，在北京逝世，享年71岁。</p>
+        <p>全国人民深感痛惜，表达最诚挚的哀悼和缅怀之情。</p>
+    </div>
 
-    function nextPhrase() {
-      step++;
-      autoPlayStory(); // Continue to next phrase
-    }
+    <!-- 献花圈次数计数器 -->
+    <div style="margin-top: 30px;">
+        <p>献花圈次数：<span id="counter">114514</span> 次</p>
+        <button onclick="increaseCount()">手动增加次数</button>
+    </div>
 
-    function checkRaiseHand() {
-      if (raisedHand) {
-        showText('您已举手。');
-        showHandStatus('已举手');
-        showStatus('举手');
-        setTimeout(nextPhrase, 2000); // Move to next phrase after 2 seconds
-      } else {
-        showText('您被杀掉了！因为您没有举手。');
-      }
-    }
+    <!-- 主席别睡了起来嗨按钮 -->
+    <div style="margin-top: 30px;">
+        <button onclick="playMusicAndChangeBackground()">主席别睡了起来嗨</button>
+    </div>
 
-    function checkPutDown() {
-      if (!raisedHand) {
-        showText('您已放下手。');
-        showHandStatus('已放下');
-        showStatus('放下');
-        setTimeout(nextPhrase, 2000); // Move to next phrase after 2 seconds
-      } else {
-        showText('您被杀掉了！因为您没有放下手。');
-      }
-    }
+    <!-- 网友留言模块 -->
+    <div style="margin-top: 30px; text-align: left;">
+        <h2>网友留言</h2>
+        <div id="comments">
+            <div><strong>腊肉蛋炒饭：</strong>沙发 终于死了</div>
+            <div><strong>李老师不是你老师：</strong>死得好，遗臭万年的东西。</div>
+        </div>
+        <form id="commentForm" onsubmit="submitComment(event)">
+            <label for="nameInput">网名：</label>
+            <input type="text" id="nameInput" required>
+            <br>
+            <label for="commentInput">发言：</label>
+            <textarea id="commentInput" rows="3" required></textarea>
+            <br>
+            <button type="submit">发表留言</button>
+        </form>
+    </div>
 
-    function raiseHand() {
-      raisedHand = true;
-      autoPlayStory(); // Trigger story progression after hand raised manually
-    }
+    <script>
+        // 计数器功能
+        let count = 114514; // 初始次数
+        const counterDisplay = document.getElementById('counter');
 
-    function putDown() {
-      raisedHand = false;
-      autoPlayStory(); // Trigger story progression after hand put down manually
-    }
+        function increaseCount() {
+            count++;
+            updateCounter();
+        }
 
-    // Start autoplay when the page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      autoPlayStory();
-    });
-  </script>
+        function updateCounter() {
+            counterDisplay.textContent = count;
+        }
 
-  <br>
-  <button onclick="raiseHand()">举手</button>
-  <button onclick="putDown()">放下</button>
-</body>
-</html>
+        // 自动增加计数器每秒钟一次
+        setInterval(function() {
+            count++;
+            updateCounter();
+        }, 1000);
+
+        // 播放哀乐音乐按钮
+        function playLamentMusic() {
+            const bgMusic = document.getElementById('bgMusic1');
+            bgMusic.src = "http://music.163.com/song/media/outer/url?id=395194.mp3";
+            bgMusic.play();
+        }
+
+        // 播放音乐并改变背景色
+        function playMusicAndChangeBackground() {
+            const body = document.getElementById('body');
+            const bgMusic = document.createElement('audio');
+            bgMusic.id = 'bgMusic2';
+            bgMusic.style.display = 'none';
+            bgMusic.innerHTML = '<source src="http://m701.music.126.net/20240619003013/78c7a8f92b4436258ca512804ecc087d/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/9547003690/8e2e/503f/2dae/84520c3819267ba1f121a6cf
